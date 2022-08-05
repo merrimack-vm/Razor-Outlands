@@ -1,0 +1,27 @@
+//Uses Kindlings every 4 seconds, otherwhise carves away on trees around you if you have a dagger in your main hand
+if rhandempty
+    overhead 'equip a dagger in your hand'
+    stop
+elseif not timerexists 'kindling' or not timerexists 'camping'
+    createtimer 'kindling'
+    createtimer 'camping'
+endif
+if insysmsg 'not enough wood here'
+    overhead 'Move to next spot' 37
+    settimer 'kindling' 0
+    clearsysmsg
+elseif targetexists and diffweight > 20
+    overhead 'Carving' 0
+    target 'self'
+    settimer 'kindling' 0
+elseif findtype "kindling" backpack and timer 'camping' > 4000
+    dclicktype "kindling" backpack
+    settimer 'camping' 0
+elseif diffweight > 20 and timer 'kindling' > 1000
+    hotkey 'Use item in hand'
+    settimer 'kindling' 0
+elseif insysmsg 'not enough wood here'
+    overhead 'Move to next spot' 37
+    clearsysmsg
+endif
+loop
